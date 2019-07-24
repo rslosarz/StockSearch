@@ -10,7 +10,6 @@ import kotlinx.android.synthetic.main.activity_search.*
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
-
 class SearchActivity : AppCompatActivity() {
 
     private val viewModel: SearchViewModel by viewModel()
