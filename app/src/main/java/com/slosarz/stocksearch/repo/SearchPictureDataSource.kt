@@ -7,30 +7,31 @@ import com.slosarz.stocksearch.model.SearchPictureResponse
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
-import org.koin.core.KoinComponent
-import org.koin.core.inject
 
-class SearchPictureDataSource : PageKeyedDataSource<Int, PictureResponse>(), KoinComponent {
+class SearchPictureDataSource(
+    private val searchApi: SearchPictureApi,
+    private val schedulerProvider: SchedulerProvider
+) : PageKeyedDataSource<Int, PictureResponse>() {
 
-    private val searchApi: SearchPictureApi by inject()
     private val compositeDisposable = CompositeDisposable()
 
-    var searchTag: String = ""
+    private var searchTag: String = ""
 
     override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, PictureResponse>) {
         compositeDisposable += searchApi.getSearchPictureResponse(ApiConstants.PAGE_SIZE)
+            .subscribeOn(schedulerProvider.io())
             .subscribeBy(
                 onSuccess = { onLoadInitialSuccess(it, callback) },
                 onError = { onLoadDataError(it) }
-
             )
     }
 
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, PictureResponse>) {
         compositeDisposable += searchApi.getSearchPictureResponse(ApiConstants.PAGE_SIZE, params.key, searchTag)
-            .subscribe(
-                { onLoadAfterSuccess(callback, it, params) },
-                { onLoadDataError(it) }
+            .subscribeOn(schedulerProvider.io())
+            .subscribeBy(
+                onSuccess = { onLoadAfterSuccess(callback, it, params) },
+                onError = { onLoadDataError(it) }
             )
     }
 
@@ -44,6 +45,7 @@ class SearchPictureDataSource : PageKeyedDataSource<Int, PictureResponse>(), Koi
     }
 
     private fun onLoadDataError(error: Throwable) {
+        //Would be nice to do sth more here like send analytics event and perform retry strategy.
         Log.e("SearchPictureDataSource", "Fetch data", error)
     }
 
