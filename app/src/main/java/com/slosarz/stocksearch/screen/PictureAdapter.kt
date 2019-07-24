@@ -24,6 +24,8 @@ class PictureAdapter(private val activity: Activity) :
     override fun onBindViewHolder(holder: PictureViewHolder, position: Int) {
         val picture: PictureResponse? = getItem(position)
         if (picture != null) {
+            //We use Activity to benefit from Glide's "lifecycle aware" feature.
+            //Also for that reason we avoid passing activity down to ViewHolder
             Glide.with(activity)
                 .load(picture.assets.preview.url)
                 .error(R.drawable.placeholder_picture_error)
