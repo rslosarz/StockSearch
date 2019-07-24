@@ -1,6 +1,7 @@
 package com.slosarz.stocksearch.repo
 
 import com.slosarz.stocksearch.model.SearchPictureResponse
+import com.slosarz.stocksearch.network.ApiConstants
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Query

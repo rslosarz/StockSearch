@@ -1,4 +1,4 @@
-package com.slosarz.stocksearch.repo
+package com.slosarz.stocksearch.network
 
 object ApiConstants {
     const val BASE_URL = "https://api.shutterstock.com/v2/"
