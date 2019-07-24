@@ -1,9 +1,7 @@
 package com.slosarz.stocksearch.di
 
 import com.slosarz.stocksearch.di.module.NetworkModule
-import com.slosarz.stocksearch.repo.ProductionSchedulerProvider
-import com.slosarz.stocksearch.repo.SchedulerProvider
-import com.slosarz.stocksearch.repo.SearchPictureFactory
+import com.slosarz.stocksearch.repo.*
 import com.slosarz.stocksearch.screen.SearchViewModel
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
@@ -21,6 +19,7 @@ object DiUtil {
         single { NetworkModule.provideHttpClient(get(named("authenticator")), get(named("apiCompatibility"))) }
         single { NetworkModule.provideRetrofitInterface(get()) }
         single { NetworkModule.provideSearchPictureApi(get()) }
+        single<PictureLoader> { GlidePictureLoader() }
     }
 
     val repositoryModule = module {
