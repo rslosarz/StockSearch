@@ -17,8 +17,12 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
+        setupPictureSearchList()
+    }
+
+    private fun setupPictureSearchList() {
         val adapter = PictureAdapter(this)
-        viewModel.data.observe(this, Observer { adapter.submitList(it) })
+        viewModel.getPictureData().observe(this, Observer { adapter.submitList(it) })
         pictureList.layoutManager = LinearLayoutManager(this)
         pictureList.adapter = adapter
     }

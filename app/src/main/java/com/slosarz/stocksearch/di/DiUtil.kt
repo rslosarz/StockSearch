@@ -1,14 +1,21 @@
 package com.slosarz.stocksearch.di
 
 import com.slosarz.stocksearch.di.module.NetworkModule
+import com.slosarz.stocksearch.repo.ProductionSchedulerProvider
+import com.slosarz.stocksearch.repo.SchedulerProvider
 import com.slosarz.stocksearch.repo.SearchPictureFactory
 import com.slosarz.stocksearch.screen.SearchViewModel
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
+/**
+ * Util defining DI modules
+ * I'm using Koin here instead of Dagger2. For reasoning please refer to README.md
+ */
 object DiUtil {
     val networkModule = module {
+        single<SchedulerProvider> { ProductionSchedulerProvider() }
         single(named("authenticator")) { NetworkModule.provideBaseAuthenticationInterceptor() }
         single(named("apiCompatibility")) { NetworkModule.provideApiCompatibilityInterceptor() }
         single { NetworkModule.provideHttpClient(get(named("authenticator")), get(named("apiCompatibility"))) }
@@ -17,7 +24,7 @@ object DiUtil {
     }
 
     val repositoryModule = module {
-        factory { SearchPictureFactory() }
+        factory { SearchPictureFactory(get(), get()) }
     }
 
     val appModule = module {

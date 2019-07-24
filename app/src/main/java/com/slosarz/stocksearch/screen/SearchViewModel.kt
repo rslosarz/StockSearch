@@ -10,21 +10,17 @@ import com.slosarz.stocksearch.repo.SearchPictureFactory
 
 class SearchViewModel(private val searchPictureFactory: SearchPictureFactory) : ViewModel() {
 
-    lateinit var data: LiveData<PagedList<PictureResponse>>
-
-    init {
-        initializePaging()
+    fun getPictureData(): LiveData<PagedList<PictureResponse>> {
+        val pagedListConfig = buildPageListConfig()
+        return LivePagedListBuilder(searchPictureFactory, pagedListConfig)
+            .build()
     }
 
-    private fun initializePaging() {
-
-        val pagedListConfig = PagedList.Config.Builder()
+    private fun buildPageListConfig(): PagedList.Config {
+        return PagedList.Config.Builder()
             .setEnablePlaceholders(true)
             .setInitialLoadSizeHint(ApiConstants.PAGE_SIZE)
             .setPageSize(ApiConstants.PAGE_SIZE)
-            .build()
-
-        data = LivePagedListBuilder(searchPictureFactory, pagedListConfig)
             .build()
     }
 }

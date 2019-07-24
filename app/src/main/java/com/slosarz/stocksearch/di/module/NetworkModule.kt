@@ -17,14 +17,14 @@ object NetworkModule {
     }
 
     fun provideBaseAuthenticationInterceptor(): Interceptor {
-        return BaseAuthenticationInterceptor(
-            "1ccb9-6f12a-e448c-7cb76-50917-03e0e",
-            "8d183-9c539-f6122-a813f-8426f-a68a6"
-        )
+        //Unsafe credential storage - please refer to README.md
+        val username = ApiConstants.USERNAME
+        val password = ApiConstants.PASSWORD
+        return BaseAuthenticationInterceptor(username, password)
     }
 
     fun provideApiCompatibilityInterceptor(): Interceptor {
-        return ApiCompatibilityInterceptor("StockSearch")
+        return ApiCompatibilityInterceptor(ApiConstants.APP_NAME)
     }
 
     fun provideHttpClient(authentication: Interceptor, apiCompatibility: Interceptor): OkHttpClient {
