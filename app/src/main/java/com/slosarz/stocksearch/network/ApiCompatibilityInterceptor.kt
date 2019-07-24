@@ -1,6 +1,5 @@
 package com.slosarz.stocksearch.network
 
-import com.slosarz.stocksearch.repo.ApiConstants
 import okhttp3.Interceptor
 import okhttp3.Response
 

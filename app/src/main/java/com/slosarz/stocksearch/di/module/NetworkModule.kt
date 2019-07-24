@@ -2,7 +2,7 @@ package com.slosarz.stocksearch.di.module
 
 import com.slosarz.stocksearch.network.ApiCompatibilityInterceptor
 import com.slosarz.stocksearch.network.BaseAuthenticationInterceptor
-import com.slosarz.stocksearch.repo.ApiConstants
+import com.slosarz.stocksearch.network.ApiConstants
 import com.slosarz.stocksearch.repo.SearchPictureApi
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient

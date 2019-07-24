@@ -7,13 +7,12 @@ import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.slosarz.stocksearch.R
 import com.slosarz.stocksearch.model.PictureResponse
+import com.slosarz.stocksearch.repo.PictureLoader
 import kotlinx.android.synthetic.main.item_picture.view.*
 
-class PictureAdapter(private val activity: Activity) :
+class PictureAdapter(private val activity: Activity, private val pictureLoader: PictureLoader) :
     PagedListAdapter<PictureResponse, PictureViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PictureViewHolder {
@@ -22,16 +21,8 @@ class PictureAdapter(private val activity: Activity) :
     }
 
     override fun onBindViewHolder(holder: PictureViewHolder, position: Int) {
-        val picture: PictureResponse? = getItem(position)
-        if (picture != null) {
-            //We use Activity to benefit from Glide's "lifecycle aware" feature.
-            //Also for that reason we avoid passing activity down to ViewHolder
-            Glide.with(activity)
-                .load(picture.assets.preview.url)
-                .error(R.drawable.placeholder_picture_error)
-                .placeholder(R.drawable.placeholder_progress_animation)
-                .transition(DrawableTransitionOptions.withCrossFade())
-                .into(holder.itemView.pictureView)
+        getItem(position)?.let {
+            pictureLoader.loadPicture(holder.itemView.pictureView, it.assets.preview.url, activity)
         }
     }
 
