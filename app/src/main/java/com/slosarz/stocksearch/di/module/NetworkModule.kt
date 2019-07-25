@@ -1,3 +1,8 @@
+/*
+ *  Created by Rafal Slosarz
+ *  Copyright (c) 2019 . All rights reserved.
+ */
+
 package com.slosarz.stocksearch.di.module
 
 import com.slosarz.stocksearch.network.ApiCompatibilityInterceptor
